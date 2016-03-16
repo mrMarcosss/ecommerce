@@ -1,0 +1,7 @@
+Example Text
+
+Join Us today.
+
+Built with Django & Bootstrap
+
+Created for Starters of all kinds.

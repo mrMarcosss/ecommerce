@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
+{% block head_title %}Welcome | {{ block.super }}{% endblock %}
+
+<style>
+    {% block style %}
+        .navbar-static-top {
+            margin-bottom: 0px !important;
+        }
+
+        .jumbotron {
+            background-color: #328DB9;
+            background-image: url("http://www.transparenttextures.com/patterns/low-contrast-linen.png");
+            color: #FFF;
+        }
+
+    {% endblock %}
+</style>
+
+
+
+{% block jumbotron %}
+    {% if not request.user.is_authenticated %}
+
+        <div class="jumbotron">
+            <div class="container">
+                <div class="row">
+                    <div class='col-sm-6'>
+                        <h1>eCommerce project</h1>
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vestibulum congue enim.
+                            Duis et diam id neque vehicula sollicitudin et non orci.
+                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                            Nullam risus lacus, sagittis et diam et, accumsan sodales lectus.
+                        </p>
+                        <p>
+                            <a class="btn btn-lg btn-primary" href="" role="button">Join Us &raquo;</a>
+                        </p>
+                    </div>
+                    <div class='col-sm-6'>
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/EUJM3YR56wU" frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1>You are logged in!</h1>
+
+        {% if queryset %}
+            <h2>Welcome Staff</h2>
+            <table class='table'>
+                {% for instance in queryset %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ instance.email }}</td>
+                        <td>{{ instance.full_name }}</td>
+                        <td>{{ instance.timestamp|timesince }} ago</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+        {% endif %}
+
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,52 @@
+~
+\#*\#
+
+*.py[cod]
+*~
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+build
+sdist
+develop-eggs
+.installed.cfg
+.idea
+.git
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+#LESS build
+CACHE
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+/venv
+/env
+*.sqlite
+*.sublime-*
+/src/coverage
+/d
+db.*
+*.pyc
+.emacs.*
+.idea
+
+#DB Images
+/media
+
+production.py
