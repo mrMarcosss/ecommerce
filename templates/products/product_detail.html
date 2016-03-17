@@ -2,13 +2,53 @@
 
 {% block content %}
 
-    <h1>{{ object.title }}</h1>
-    <div class="col-sm-1">
-        <select class="form-control">
-            {% for item in variations %}
-            <option value="{{ item.pk }}">{{ item.title }}</option>
-            {% endfor %}
-        </select>
+    <div class="row">
+        <div class="col-sm-8">
+            <h1>{{ object.title }}</h1>
+            {% if object.productimage_set.count > 0 %}
+                <div class="row">
+                    {% for img in object.productimage_set.all %}
+                        <div class="col-sm-4">
+                            <img src="{{ img.image.url }}" class="img-responsive">
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br>
+            <p class="lead">
+                {{ object.description }}
+            </p>
+        </div>
+        <div class="col-sm-4 pull-right">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="pull-right">{{ object.price }} $</h3>
+                </div>
+            </div>
+            {% if variations.count > 1 %}
+                <div class="row" style="margin-top: 20px;">
+                    <div class="col-sm-8 pull-right">
+                        <select class="form-control">
+                            {% for item in variations %}
+                            <option value="{{ item.pk }}">{{ item.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endif %}
+            <br>
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="#" class="btn btn-raised btn-success pull-right">Add to card</a>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center">
+                    <h3>Related products</h3>
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

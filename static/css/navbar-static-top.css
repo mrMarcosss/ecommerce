@@ -1,34 +1,7 @@
-.navbar-static-top {
-  margin-bottom: 19px;
-  background-color: #327BB9;
-  border-color: #327BB9;
-  background-image: url("http://www.transparenttextures.com/patterns/low-contrast-linen.png");
+.navbar-form {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
-
-.navbar-default .navbar-brand {
-  color: #FFF;
-}
-
-.navbar-default .navbar-nav>li>a {
-  color: #fff
-}
-
-.navbar-default .navbar-brand:hover {
-  color: #fff;
-}
-
-.navbar-default .navbar-nav>li>a:hover {
-  color: #fff;
-}
-
-.navbar-default .navbar-toggle {
- border-color: transparent !important;
-}
-
-.navbar-toggle:hover {
-	background-color: #ccc !important;
-}
-
-.navbar-toggle {
-	background-color: #fff !important;
+.navbar .navbar-form {
+    margin-top: 0px !important;
 }
