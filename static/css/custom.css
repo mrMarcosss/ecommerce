@@ -6,3 +6,8 @@
     font-size: 14px !important;
     color: #464646 !important;
 }
+
+.orig-price{
+    color:#ff5722;
+    text-decoration:line-through;
+}

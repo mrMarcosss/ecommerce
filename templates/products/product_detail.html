@@ -20,26 +20,42 @@
             </p>
         </div>
         <div class="col-sm-4 pull-right">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3 class="pull-right">{{ object.price }} $</h3>
+            {% if object.variation_set.count > 1 %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="pull-right" id="product_price">{{ object.variation_set.first.price }} $</h3>
+                    </div>
                 </div>
-            </div>
-            {% if variations.count > 1 %}
                 <div class="row" style="margin-top: 20px;">
                     <div class="col-sm-8 pull-right">
-                        <select class="form-control">
-                            {% for item in variations %}
-                            <option value="{{ item.pk }}">{{ item.title }}</option>
+                        <select class="form-control  variation_select">
+                            {% for item in object.variation_set.all %}
+                                <option data-sale-price="{{ item.sale_price }}" data-price="{{ item.price }}"
+                                        value="{{ item.pk }}">{{ item.title }}</option>
                             {% endfor %}
                         </select>
+                    </div>
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="pull-right" id="product_price">
+                            {% if object.variation_set.first.sale_price %}
+                                {{ object.variation_set.first.sale_price }} $
+                                <span class="orig-price">{{ object.variation_set.first.price }} $</span>
+                            {% else %}
+                                <span data-sale-price="{{ item.sale_price }}" data-price="{{ item.price }}">{{ object.variation_set.first.price }} $</span>
+                            {% endif %}
+                        </h3>
                     </div>
                 </div>
             {% endif %}
             <br>
             <div class="row">
                 <div class="col-sm-12">
-                    <a href="#" class="btn btn-raised btn-success pull-right">Add to card</a>
+                    <a href="#" class="btn btn-raised btn-success pull-right" style="margin-bottom: 25px">Add to card</a>
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_sharing_toolbox pull-right"></div>
                 </div>
             </div>
             <hr>
@@ -51,4 +67,27 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block js %}
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-565c5525f9863526"></script>
+    <script>
+        $(document).ready(function(){
+            function setPrice(){
+                var price = $('.variation_select option:selected').attr('data-price');
+                console.log(price)
+                var sale_price = $('.variation_select option:selected').attr('data-sale-price');
+                if(sale_price != '' && sale_price != 'None' && sale_price != null){
+                    $('#product_price').html(sale_price + ' $' + ' <span class="orig-price">'+ price + '$</span>');
+                } else if (price != undefined) {
+                    $('#product_price').html(price + ' $');
+                }
+            }
+            setPrice();
+            $('.variation_select').change(function(){
+                setPrice()
+            });
+        });
+    </script>
 {% endblock %}

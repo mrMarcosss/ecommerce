@@ -9,7 +9,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png"/>
 
     <title>{% block head_title %}ecommerce{% endblock %}</title>
 
@@ -46,6 +46,6 @@
     </div> <!-- /container -->
 
     {% include "javascript.html" %}
-
+    {% block js %} {% endblock %}
   </body>
 </html>
