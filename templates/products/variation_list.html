@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1 class="text-align-center">
+        <span class="text-muted">Inventory for - </span>
+        <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+    </h1>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                <div class="row">
+                    {% for form in formset %}
+                        <div class="col-sm-4">
+                            {% if not form.instance.title and not form.instance.title %}
+                                <h3 class="text-align-center">
+                                    Create new one
+                                </h3>
+                            {% else %}
+                                <h3 class="text-align-center" id="{{ form.instance.title }}">
+                                    {{ form.instance.product.title }} - <b>{{ form.instance.title }}</b></h3>
+                                </h3>
+                            {% endif %}
+                            {{ form|crispy }}
+                        </div>
+                    {% endfor %}
+                    <div class="col-sm-12" style="margin-bottom: 50px">
+                        <input type="submit" value="update or create" class="btn btn-raised btn-success">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
