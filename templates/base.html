@@ -21,7 +21,19 @@
   </head>
 
   <body>
-      {% include 'navbar.html' %}
+        {% include 'navbar.html' %}
+
+
+    {% for message in messages %}
+        <div class="container">
+            <div class="text-align-center alert{% if message.tags %}
+                            alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}
+                            {% endif %}">
+                <button class="close" type="button" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
 
     {% block jumbotron %} {% endblock %}
 
