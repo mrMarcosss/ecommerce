@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>{{ object.title }}</h1>
+    <div class="col-sm-1">
+        <select class="form-control">
+            {% for item in variations %}
+            <option value="{{ item.pk }}">{{ item.title }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+{% endblock %}

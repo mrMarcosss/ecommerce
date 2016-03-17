@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^contact/$', contact, name='contact'),
     url(r'^about/$', about, name='about'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^products/', include('products.urls', namespace='products')),
     url(r'^accounts/', include('registration.backends.default.urls')),
 ]
 
