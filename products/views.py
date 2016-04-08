@@ -5,7 +5,25 @@ from django.views.generic import DetailView, ListView
 
 from products.forms import VariationInventoryFormSet
 from products.mixins import StaffRequiredMixin
-from products.models import Product, Variation
+from products.models import Product, Variation, Category
+
+
+class CategoryListView(ListView):
+    model = Category
+    queryset = Category.objects.all()
+    template_name = 'products/product_list.html'
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        obj = self.get_object()
+        product_set = obj.product_set.all()
+        default_products = obj.default_category.all()
+        context['products'] = (product_set | default_products).distinct()
+        return context
 
 
 class ProductDetailView(DetailView):
