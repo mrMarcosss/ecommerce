@@ -60,8 +60,15 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-sm-12" style="text-align: center">
+                <div class="col-sm-8 pull-right" style="text-align: center">
                     <h3>Related products</h3>
+                    <table class="table">
+                        {% for prod in related %}
+                            <tr>
+                                <td><a href="{{ prod.get_absolute_url }}">{{ prod.title }}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>

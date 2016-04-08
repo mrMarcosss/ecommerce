@@ -31,6 +31,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
+        context['related'] = Product.objects.get_related(self.get_object()).order_by('?')[:7]
         return context
 
 
@@ -83,5 +84,3 @@ class VariationListView(StaffRequiredMixin, ListView):
                     new_item.save()
             messages.success(request, 'Your inventory and pricing has been updated')
             return redirect('products:product_list')
-
-
