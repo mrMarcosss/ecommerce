@@ -1,0 +1,18 @@
+<div class="row">
+    {% for object in object_list %}
+        <div class="col-xs-4 {{ col_class_set }}">
+            <div class="thumbnail text-center">
+                <h4><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h4>
+                <a href="{{ object.get_absolute_url }}">
+                    <img src="{{ object.get_img_url }}" class="img-responsive" style="height: 100px">
+                </a>
+            </div>
+        </div>
+        {% if not col_class_set %}
+            {% cycle '' '' '</div><div class="row">' %}
+        {% endif %}
+
+
+    {% endfor %}
+
+</div>

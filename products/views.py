@@ -1,3 +1,5 @@
+import random
+
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
@@ -31,7 +33,7 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
-        context['related'] = Product.objects.get_related(self.get_object()).order_by('?')[:7]
+        context['related'] = sorted(Product.objects.get_related(self.get_object())[:7], key=lambda x: random.random())
         return context
 
 

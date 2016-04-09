@@ -3,26 +3,20 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-sm-8">
-            <h1>{{ object.title }}</h1>
-            <br>
-            <p class="lead">
-                {{ object.description }}
-            </p>
-            <div>
-                <div class="row">
-                    {% for product in products %}
-                        <div class="col-sm-3">
-                            <h3 class="text-info">{{ product.title }}</h3>
-                            <img src="{{ product.productimage_set.all.0.image.url }}" class="img-responsive">
-                            <p class="lead">
-                                {{ product.description|truncatewords:10 }}
-                            </p>
-                        </div>
-                    {% endfor %}
+        {% for object in products %}
+            <div class="col-xs-4">
+                 <h1><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h1>
+                <div class="thumbnail text-center">
+                    <h4><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h4>
+                    <a href="{{ object.get_absolute_url }}">
+                        <img src="{{ object.get_img_url }}" class="img-responsive">
+                    </a>
                 </div>
             </div>
-        </div>
+            {% cycle '' '' '</div><div class="row">' %}
+
+        {% endfor %}
+
     </div>
 
 {% endblock %}

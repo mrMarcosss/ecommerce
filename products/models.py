@@ -39,6 +39,12 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('products:product_detail', kwargs={'pk': self.pk})
 
+    def get_img_url(self):
+        img = self.productimage_set.first()
+        if img:
+            return img.image.url
+        return img  # None
+
 
 def image_upload_to(instance, filename):
     title = instance.product.title
@@ -90,6 +96,26 @@ class Variation(models.Model):
 
     def get_absolute_url(self):
         return self.product.get_absolute_url()
+
+
+def image_upload_to_featured(instance, filename):
+    title = instance.product.title
+    slug = slugify(title)
+    return 'products/{}/featured/{}'.format(slug, filename)
+
+
+class ProductFeatured(models.Model):
+    product = models.ForeignKey(Product)
+    image = models.ImageField(upload_to=image_upload_to_featured)
+    title = models.CharField(max_length=120, null=True, blank=True)
+    text = models.CharField(max_length=220, null=True, blank=True)
+    text_right = models.BooleanField(default=False)
+    show_price = models.BooleanField(default=False)
+    make_image_background = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.product.title
 
 
 def product_save_receiver(sender, instance, created, *args, **kwargs):

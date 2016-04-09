@@ -5,13 +5,11 @@
     <div class="row">
         <div class="col-sm-8">
             <h1>{{ object.title }}</h1>
-            {% if object.productimage_set.count > 0 %}
+            {% if object.get_img_url %}
                 <div class="row">
-                    {% for img in object.productimage_set.all %}
-                        <div class="col-sm-4">
-                            <img src="{{ img.image.url }}" class="img-responsive">
-                        </div>
-                    {% endfor %}
+                    <div class="col-sm-4">
+                        <img src="{{ object.get_img_url }}" class="img-responsive">
+                    </div>
                 </div>
             {% endif %}
             <br>
@@ -60,15 +58,24 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-sm-8 pull-right" style="text-align: center">
+                <div class="col-sm-10 pull-right" style="text-align: center">
                     <h3>Related products</h3>
-                    <table class="table">
+                    <div class="row">
                         {% for prod in related %}
-                            <tr>
-                                <td><a href="{{ prod.get_absolute_url }}">{{ prod.title }}</a></td>
-                            </tr>
+                            <div class="col-sm-6">
+                                <div class="thumbnail">
+                                    <img src="{{ prod.get_img_url }}" class="img-responsive" style="height: 100px">
+                                    <div class="caption">
+                                        <h3><a href="{{ prod.get_absolute_url }}">{{ prod.title }}</a></h3>
+                                        <p>{{ prod.description|truncatewords:5 }}</p>
+{#                                        <p>#}
+{#                                            <a href="#" class="btn btn-primary" role="button">Button</a>#}
+{#                                        </p>#}
+                                    </div>
+                                </div>
+                            </div>
                         {% endfor %}
-                    </table>
+                    </div>
                 </div>
             </div>
         </div>
