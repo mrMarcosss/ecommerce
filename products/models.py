@@ -97,6 +97,15 @@ class Variation(models.Model):
     def get_absolute_url(self):
         return self.product.get_absolute_url()
 
+    def add_to_cart(self):
+        return '{}?item={}&qty=1'.format(reverse('cart'), self.pk)
+
+    def remove_from_cart(self):
+        return '{}?item={}&qty=1&delete=True'.format(reverse('cart'), self.pk)
+
+    def get_title(self):
+        return '{} - {}'.format(self.product.title, self.title)
+
 
 def image_upload_to_featured(instance, filename):
     title = instance.product.title
