@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags i18n %}
+
+{% block content %}
+
+    {% if not user_can_continue %}
+    
+    <div class="col-sm-6">
+        <p class="lead">Continue as Guest</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-raised btn-success" value="Continue">
+        </form>
+    </div>
+    <div class="col-sm-6">
+        <p class="lead">Login to continue</p>
+        <form action="{% url 'auth_login' %}" method="post">
+            {% csrf_token %}
+            {{ login_form|crispy }}
+            <input type="hidden" name="next" value="{{ next_url }}">
+            <input type="submit" class="btn btn-raised btn-success" value="Login">
+        </form>
+
+        <p>{% trans "Forgot password" %}? <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>!</p>
+        <p>{% trans "Not member" %}? <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>!</p>
+    </div>
+    {% else %}
+        <div class="row">
+            <div class="col-sm-8">
+                <p class="lead">Order Summary</p>
+                <table class="table">
+                    <tr><td>{{ order.cart.cartitem_set.count }}Item(s): <ul>{% for i in order.cart.cartitem_set.all %}
+                        <li>{{ i.item.get_title }}</li>
+                    {% endfor %}</ul></td></tr>
+                    <tr><td>Cart Subtotal: {{ order.cart.subtotal }}</td></tr>
+                    <tr><td>Tax: {{ order.cart.tax_total }}</td></tr>
+                    <tr><td>Items total: {{ order.cart.total }}</td></tr>
+                    <tr><td>Shipping: {{ order.shipping_total_price }}</td></tr>
+                    <tr><td>Order Total: {{ order.order_total }}</td></tr>
+                </table>
+            </div>
+            <div class="col-sm-4">
+                <p><b>Shipping to: {{ order.shipping_address.get_address }}</b></p>
+                <p><b>Billing to: {{ order.billing_address.get_address }}</b></p>
+                <br>
+                <p><b>Complete Order</b></p>
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

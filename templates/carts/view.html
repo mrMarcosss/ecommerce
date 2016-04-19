@@ -1,32 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <table class="table">
-        {% for item in object.cartitem_set.all %}
-            <tr>
-                <form action=".">
-                    <td>{{ item.item.get_title }}</td>
-                    <input type="hidden" name="item" value="{{ item.item.pk }}">
-                    <td>
-                        <input type="number" class="item-qty" name="qty" value="{{ item.quantity }}">
-                        <input type="submit" class="btn btn-link btn-update" value="Update" style="display: none"></td>
-                    <td>{{ item.line_item_total }}</td>
-                    <td class="text-right">
-                        <a href="{{ item.remove }}">X</a>
-                    </td>
-                </form>
-            </tr>
-        {% endfor %}
-    </table>
-
-
+    <div class="row main-content">
+        {% if object.cartitem_set.count < 1 %}
+            <h1 class="text-center">Your cart is empty</h1>
+        {% else %}
+            <h1>Your Cart</h1>
+            <table class="table">
+                {% for item in object.cartitem_set.all %}
+                    <tr id="item-{{ item.item.pk }}">
+                        <td>{{ item.item.get_title }}</td>
+                        <td>
+                            <form action=".">
+                                <input type="hidden" name="item" value="{{ item.item.pk }}">
+                                <input type="number" class="item-qty" name="qty" value="{{ item.quantity }}">
+                                <input type="submit" class="btn btn-link btn-update" value="Update" style="display: none"></td>
+                            </form>
+                        <td id="item-line-total-{{ item.item.pk }}">{{ item.line_item_total }}</td>
+                        <td class="text-right">
+                            <a href="{{ item.remove }}">X</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4" class="text-right">Subtotal: <span id="subtotal">{{ object.subtotal  }}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-right">Tax: <span id="taxtotal" >{{ object.tax_total  }}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-right">Total: <span id="carttotal">{{ object.total  }}</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="text-right"><a class="btn btn-raised btn-warning" href="{% url 'checkout' %}">Checkout</a></td>
+                </tr>
+            </table>
+        {% endif %}
+    </div>
     
 {% endblock %}
 
 {% block js %}
     <script>
         $('.item-qty').change(function(){
-            $(this).next('.btn-update').fadeIn();
+            var item = $(this).prev('input[type="hidden"]').val();
+            var qty = $(this).val();
+            var data = {
+                item: item,
+                qty: qty
+            };
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'cart' %}",
+                data: data,
+                success: function(data){
+                    $('#jq-message').text('Added ' + data.item_added + ' Deleted ' + data.deleted)
+                    if (data.deleted){
+                        $('#item-' + item).fadeOut();
+                        $('#subtotal').text(data.subtotal)
+                        $('#taxtotal').text(data.tax_total);
+                        $('#carttotal').text(data.cart_total);
+                    } else {
+                        $('#item-line-total-' + item).text(data.line_total);
+                        $('#subtotal').text(data.subtotal);
+                        $('#taxtotal').text(data.tax_total);
+                        $('#carttotal').text(data.cart_total);
+                    }
+                    if (data.total_items == 0){
+                        $('.table').fadeOut();
+                        $('.main-content').html('<h1 class="text-center">Your cart is empty</h1>')
+                    }
+                    showFlashMessage(data.flash_message)
+                    updateCartItemCount()
+                },
+                error:function(response, error){
+                    $('#add-form').submit()
+                }
+            })
         })
     </script>
 {% endblock %}

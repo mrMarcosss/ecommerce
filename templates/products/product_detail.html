@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 
     <div class="row">
@@ -18,7 +19,7 @@
             </p>
         </div>
         <div class="col-sm-4 pull-right">
-            <form action="{% url 'cart' %}" class="form-horizontal">
+            <form id="add-form" action="{% url 'cart' %}" class="form-horizontal">
                 {% if object.variation_set.count > 1 %}
 
                     <div class="row">
@@ -45,7 +46,8 @@
                                     {{ object.variation_set.first.sale_price }} $
                                     <span class="orig-price">{{ object.variation_set.first.price }} $</span>
                                 {% else %}
-                                    <span data-sale-price="{{ item.sale_price }}" data-price="{{ item.price }}">{{ object.variation_set.first.price }} $</span>
+                                    <span data-sale-price="{{ item.sale_price }}" data-price="{{ item.price }}">
+                                        {{ object.variation_set.first.price }} $</span>
                                 {% endif %}
                             </h3>
                         </div>
@@ -64,7 +66,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <input type="submit" class="btn btn-raised btn-warning pull-right" style="margin-bottom: 25px" value="Add to card">
+                        <input id="submit-btn" type="submit" class="btn btn-raised btn-warning pull-right"
+                               style="margin-bottom: 25px" value="Add to card">
                         <!-- Go to www.addthis.com/dashboard to customize your tools -->
                         <div class="addthis_sharing_toolbox pull-right"></div>
                     </div>
@@ -104,7 +107,6 @@
         $(document).ready(function(){
             function setPrice(){
                 var price = $('.variation_select option:selected').attr('data-price');
-                console.log(price)
                 var sale_price = $('.variation_select option:selected').attr('data-sale-price');
                 if(sale_price != '' && sale_price != 'None' && sale_price != null){
                     $('#product_price').html(sale_price + ' $' + ' <span class="orig-price">'+ price + '$</span>');
@@ -117,5 +119,23 @@
                 setPrice()
             });
         });
+    </script>
+    <script>
+        $('#submit-btn').click(function(e){
+            e.preventDefault();
+            var formData = $('#add-form').serialize();
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'cart' %}",
+                data: formData,
+                success: function(data){
+                    showFlashMessage(data.flash_message)
+                    updateCartItemCount()
+                },
+                error:function(response, error){
+                    $('#add-form').submit()
+                }
+            })
+        })
     </script>
 {% endblock %}

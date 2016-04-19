@@ -9,6 +9,25 @@
 {#<script src="{% static 'bower/bootstrap-material-design/scripts/index.js' %}"></script>#}
 <script src="{% static 'bower/bootstrap-material-design/dist/js/material.min.js' %}"></script>
 <script src="{% static 'bower/bootstrap-material-design/dist/js/ripples.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+<script>
+    function updateCartItemCount(){
+        var badge = $('#cart-count-badge');
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'cart_count' %}",
+            success: function(data){
+                badge.text(data.count)
+            },
+            error: function(response, error){
+
+            }
+        })
+    }
+    $(document).ready(function(){
+        updateCartItemCount()
+    })
+</script>
 <script>
     $.material.init()
 </script>
