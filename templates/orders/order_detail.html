@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'orders/order_summery_short.html' with order=order %}
+
+    <p><b>Please print for your records</b></p>
+{% endblock %}
